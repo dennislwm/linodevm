@@ -1,5 +1,5 @@
 # linodevm 
-Terraform starter project for Linode single virtual machine ["VM"].
+Terraform ["TF"] starter project for Linode single virtual machine ["VM"].
 
 - [linodevm](#linodevm)
   - [About linodevm](#about-linodevm)
@@ -7,6 +7,7 @@ Terraform starter project for Linode single virtual machine ["VM"].
   - [Prerequisite](#prerequisite)
   - [Terraform](#terraform)
     - [Provider](#provider)
+    - [Infrastructure Life Cycle](#infrastructure-life-cycle)
   - [Linode](#linode)
     - [Create an API Token](#create-an-api-token)
     - [Upload SSH Key to Linode Cloud Manager](#upload-ssh-key-to-linode-cloud-manager)
@@ -23,14 +24,27 @@ Terraform starter project for Linode single virtual machine ["VM"].
 ---
 ## Project Structure
      linodevm/                        <-- Root of your project
-       |- README.md                   <-- This README markdown file
+       |- .gitignore                  <-- GitHub ignore 
+       |- LICENSE
+       |- README.md                   <-- GitHub README markdown 
+       +- bin/                        <-- Holds any executable files
+          |- setip.sh                 <-- Updates IP address of dynamic domain at NoIP.com
+       +- docker/                     <-- Root of docker files
+          +- nginxpm/                 <-- Docker files for NGINX Proxy Manager
+          +- portainer/               <-- Docker files for Portainer
        +- tf/                         <-- Terraform root folder
           +- 001/                     <-- Terraform SSH into VM project
+          +- dev/                     <-- Linode instance for development
+             |- main.tf               <-- Main TF file (required)
+             |- outputs.tf            <-- Outputs declaration file
+             |- terraform.tfvars      <-- Secret variables declaration file for token, user and passwords (.gitignore)
+             |- variables.tf          <-- Variables declaration file
+             |- versions.tf           <-- Versions declaration file (required for TF >=v0.13)
 
 ---
 ## Prerequisite
 
-* [Terraform](https://terraform.io)
+* [Terraform v0.14.10](https://terraform.io)
 
 Terraform is distributed as a single binary. Install Terraform (64-bit) by unzipping it and moving it to a directory included in your system's ``PATH``.
 
@@ -50,6 +64,14 @@ terraform {
   }
 }
 ```
+
+### Infrastructure Life Cycle
+
+The infrastructure life cycle is as follows:
+
+> `init` -> `plan` -> `apply` -> `destroy`
+
+In the Terraform root folder, execute each command above by appending `terraform`, e.g. `terraform init`.
 
 ## Linode
 
@@ -84,3 +106,5 @@ Reference: [Getting Started with the Linode API](https://www.linode.com/docs/gui
 * [Use SSH Public Key Authentication on Linux, macOS, and Windows](https://www.linode.com/docs/guides/use-public-key-authentication-with-ssh)
 
 * [A Beginner's Guide to Terraform](https://www.linode.com/docs/guides/beginners-guide-to-terraform)
+
+* [How to Install Docker CE on Ubuntu 18.04](https://www.linode.com/docs/guides/install-docker-ce-ubuntu-1804)

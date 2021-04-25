@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+  portainer:
+    image: portainer/portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    ports:
+      - 9000:9000
+      - 8000:8000
+      # Default Administrator User
+      #   URL: http://localhost:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - vol_data:/data
+
+volumes:
+  vol_data:
+  # Named volumes are stored in a part of the host filesystem 
+  # which is managed by Docker (/var/lib/docker/volumes/ on Linux)
+  # Docker appends [FOLDER] name to named volumes.
+  #   portainer_vol_data

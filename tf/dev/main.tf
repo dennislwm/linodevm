@@ -55,6 +55,12 @@ resource "linode_instance" "obj_instance" {
     on_failure  = continue
   }
   //
+  // update 
+  provisioner "remote-exec" {
+    inline     = ["sudo apt update -y"]
+    on_failure = continue
+  }
+  //
   // execute remote commands
   provisioner "remote-exec" {
     inline     = ["sudo chmod 700 /root/bin/setip.sh", "sudo /root/bin/setip.sh ${linode_instance.obj_instance.ip_address} ${linode_instance.obj_instance.label} ${var.str_user_pass}"]
@@ -67,16 +73,15 @@ resource "linode_instance" "obj_instance" {
     on_failure = continue
   }
   //
-  // docker container portainer
+  // docker container nginxpm
   provisioner "remote-exec" {
-    inline     = ["sudo /root/bin/docker-compose -f /root/docker/portainer/docker-compose.yml up -d"]
-    //inline     = ["cd /root/${linode_instance.obj_instance.label}", "docker volume create portainer_data", "docker run -d --restart unless-stopped -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer"]
+    inline     = ["sudo /root/bin/docker-compose -f /root/docker/nginxpmlite/docker-compose.yml up -d"]
     on_failure = continue
   }
   //
-  // docker container nginxpm
-  provisioner "remote-exec" {
-    inline     = ["sudo /root/bin/docker-compose -f /root/docker/nginxpm/docker-compose.yml up -d"]
-    on_failure = continue
-  }
+  // docker container portainer
+  // provisioner "remote-exec" {
+    // inline     = ["sudo /root/bin/docker-compose -f /root/docker/portainer/docker-compose.yml up -d"]
+    // on_failure = continue
+  // }
 }

@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  mailhog:
+    image: mailhog/mailhog
+    logging:
+      driver: 'none'  # disable saving logs
+    ports:
+      - 443:1025 # smtp server
+      - 80:8025 # web ui

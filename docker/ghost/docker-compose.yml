@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  ghost:
+    # Add a Custom Nginx Configuration when adding a Proxy Host for Ghost:
+    # location / {
+    #   proxy_pass http://obj_apr21_ghost:2368;
+    #   proxy_set_header Host $host;
+    #   proxy_set_header X-Real-IP $remote_addr;
+    #   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    #   proxy_set_header X-Forwarded-Proto $scheme;
+    # }    
+    image: ghost:3-alpine
+    ports:
+      # Public HTTP Port:
+      - 2368:2368
+      # Admin Web Port:
+      - 3001:3001
+    volumes:
+      - vol_content:/var/lib/ghost/content
+    networks:
+      - net_public
+  
+volumes:
+  vol_content:
+
+networks:
+  net_public:
+  
